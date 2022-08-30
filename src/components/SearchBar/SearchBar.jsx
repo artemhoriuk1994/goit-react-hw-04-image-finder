@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  toast } from 'react-toastify';
-import { Form, Input, Button, Header ,Icon} from "./SearchBar.styled"
+import { toast } from 'react-toastify';
+import { Form, Input, Button, Header, Icon } from "./SearchBar.styled"
 
 
 export class SearchBar extends Component {
@@ -15,8 +15,8 @@ export class SearchBar extends Component {
   onSubmit = event => {
     event.preventDefault();
     if (this.state.search.trim() === '') {
-     return toast.error('Sorry, no empty search');
-   
+      return toast.error('Sorry, no empty search');
+
     }
     this.props.onSubmit(this.state.search);
     this.setState({ search: '' });
@@ -34,7 +34,7 @@ export class SearchBar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-          />{' '}
+          />
           <Button type="submit">
             <Icon />
           </Button>
