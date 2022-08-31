@@ -1,8 +1,8 @@
-import { CSSProperties } from 'react';
+
 import HashLoader from 'react-spinners/HashLoader';
 import styled from '@emotion/styled';
 
-const override: CSSProperties = {
+const override = {
   display: 'block',
   margin: '0 auto',
 };
@@ -24,8 +24,7 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.9);
 `;
 
 export default Spinner;

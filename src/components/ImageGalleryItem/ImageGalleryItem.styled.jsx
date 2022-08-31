@@ -13,7 +13,7 @@ export const ListItem = styled.li`
   margin-right: 60px;
   margin-bottom: 20px;
   border: 4px solid RGBA(0, 8, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: floralwhite;
   &:hover {
     transform: scale(1.05);
@@ -22,6 +22,6 @@ export const ListItem = styled.li`
   
 `;
 export const Image = styled.img`
-  width: 496px;
-  height: 300px;
+  width: 410px;
+  height: 286px;
 `;

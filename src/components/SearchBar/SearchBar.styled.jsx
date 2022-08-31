@@ -7,7 +7,7 @@ export const Header = styled.header`
   justify-content: center;
   height: 65px;
   width: 100%;
-  background-color: RGBA(0, 8, 0, 0.68);
+  background-color: rgba(71, 108, 192, 0.8);
   border-bottom: 4px solid RGBA(0, 8, 0, 0.1);
 `;
 export const Form = styled.form`
