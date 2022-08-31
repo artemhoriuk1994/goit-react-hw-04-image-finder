@@ -6,10 +6,6 @@ import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
-  static propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    url: PropTypes.string.isRequired,
-  };
 
   onKeyDown = event => {
     if (event.code === 'Escape') {
@@ -44,6 +40,6 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    url: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  url: PropTypes.string.isRequired,
 }
