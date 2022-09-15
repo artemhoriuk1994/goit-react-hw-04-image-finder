@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from './Spinner/Spinner';
@@ -11,26 +11,26 @@ import { Modal } from './Modal/Modal';
 
 
 
-export class App extends Component {
-  state = {
-    images: [],
-    search: '',
-    page: 1,
-    largeImage: '',
-    isLoading: false,
-    error: null,
-  };
 
-  componentDidUpdate(_, prevState) {
-    const { page, search } = this.state;
+export function App() {
+  const [images, setImages] = useState([]);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [largeImage, setLargeImage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [totalHits, setTotalHits] = useState(0)
+
+
+  useEffect(() => {
     const perPage = 12;
-    if (prevState.page !== page || prevState.search !== search) {
-      this.setState({ isLoading: true });
+    if (search) {
+      setIsLoading(true);
       fetchImages(search, page, perPage)
         .then(({ hits, totalHits }) => {
           const totalPages = totalHits / perPage;
           if (totalHits === 0) {
-             this.setState({ isLoading: false });
+            setIsLoading(false);
             return toast.error('Sorry, no images found. Please, try again!');
           }
           if (page === 1) {
@@ -39,74 +39,50 @@ export class App extends Component {
           if (page > totalPages) {
             toast.info("You've reached the end of search results.");
           }
-          this.setState(({ images }) => ({
-            images: [...images, ...hits],
-            total: totalHits,
-            isLoading: false,
-          }));
+          setImages(state => [...state, ...hits])
+          setTotalHits(totalHits)
+          setIsLoading(false);
         })
-        .catch(error => this.setState({ error }));
+        .catch(setError(error));
     }
-  }
-  onOpenModal = url => {
-    this.setState({
-      largeImage: url,
-    });
-  };
+  }, [error, page, search])
 
-  onModalClose = () => {
-    this.setState({
-      largeImage: '',
-    });
-  };
 
-  searchQuery = searchInput => {
-    if (searchInput === this.state.search) {
+  const searchQuery = searchInput => {
+    if (searchInput === search) {
       return;
     }
-    this.setState({
-      images: [],
-      page: 1,
-      search: searchInput,
-      error: null,
-    });
+    setImages([])
+    setSearch(searchInput)
   };
 
-  onLoadMore = () => {
-    this.setState(({ page }) => ({
-      page: page + 1,
-      isLoading: true,
-    }));
-  };
-
-  render() {
-    const { images, total, largeImage, isLoading } = this.state;
-
-
-    return (
-      <Box
-        listStyle="none"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
-        <SearchBar onSubmit={this.searchQuery} />
-        {images.length > 0 && (
-          <>
-            <ImageGallery images={images} onClick={this.onOpenModal} />
-            {total !== images.length && (
-              <MoreButton type="button" onClick={this.onLoadMore}>
-                Load More
-              </MoreButton>
-            )}
-          </>
-        )}
-        {largeImage && (
-          <Modal closeModal={this.onModalClose} url={largeImage} />
-        )}
-        {isLoading && <Spinner />}
-        <ToastContainer />
-      </Box>
-    );
-  }
+  return (
+    <Box
+      listStyle="none"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <SearchBar onSubmit={searchQuery} />
+      {images.length > 0 && (
+        <>
+          <ImageGallery images={images} onClick={url => setLargeImage(url)} />
+          {totalHits !== images.length && (
+            <MoreButton type="button" onClick={() => {
+              setPage(page + 1);
+              setIsLoading(true);
+            }}>
+              Load More
+            </MoreButton>
+          )}
+        </>
+      )}
+      {largeImage && (
+        <Modal closeModal={() => setLargeImage('')} url={largeImage} />
+      )}
+      {isLoading && <Spinner />}
+      <ToastContainer />
+    </Box>
+  );
 }
+

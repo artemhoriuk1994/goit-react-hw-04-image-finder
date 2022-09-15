@@ -1,45 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Form, Input, Button, Header, Icon } from "./SearchBar.styled"
 
 
-export class SearchBar extends Component {
-  state = {
-    search: '',
-  };
+export function SearchBar({ onSubmit }) {
+  const [search, setSearch] = useState('')
 
-  onChange = event => {
-    this.setState({ search: event.currentTarget.value });
-  };
-
-  onSubmit = event => {
+  const onHandleSubmit = event => {
     event.preventDefault();
-    if (this.state.search.trim() === '') {
+    if (search.trim() === '') {
       return toast.error('Sorry, no empty search');
-
     }
-    this.props.onSubmit(this.state.search);
-    this.setState({ search: '' });
+    onSubmit(search);
+    setSearch('');
   };
 
-  render() {
-    return (
-      <Header>
-        <Form onSubmit={this.onSubmit}>
-          <Input
-            onChange={this.onChange}
-            value={this.state.search}
-            name="search"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-          />
-          <Button type="submit">
-            <Icon />
-          </Button>
-        </Form>
-      </Header>
-    );
-  }
+  return (
+    <Header>
+      <Form onSubmit={onHandleSubmit}>
+        <Input
+          onChange={e => setSearch(e.currentTarget.value)}
+          value={search}
+          name="search"
+          type="text"
+          autoComplete="on"
+          autoFocus
+          placeholder="Search images and photos"
+        />
+        <Button type="submit">
+          <Icon />
+        </Button>
+      </Form>
+    </Header>
+  );
 }
