@@ -52,8 +52,9 @@ export function App() {
     if (searchInput === search) {
       return;
     }
-    setImages([])
-    setSearch(searchInput)
+    setPage(1);
+    setImages([]);
+    setSearch(searchInput);
   };
 
   return (
